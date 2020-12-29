@@ -8,7 +8,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 @Dao
-interface ContactDao
+public interface ContactDao
 {
     // Primary key is of type long
     @Insert
