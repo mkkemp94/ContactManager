@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +26,10 @@ import com.anushka.androidtutz.contactmanager.db.entity.Contact;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view_contacts);
         contactAppDatabase = Room.databaseBuilder(getApplicationContext(),
                 ContactAppDatabase.class, "ContactDB"
-        ).build();
+        ).addCallback(callback).build();
         
         new GetAllContactsAsyncTask().execute();
         
@@ -207,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
             if (contact != null) {
         
                 contactArrayList.add(0, contact);
-                contactsAdapter.notifyDataSetChanged();
             }
             
             return null;
@@ -254,4 +257,27 @@ public class MainActivity extends AppCompatActivity {
             contactsAdapter.notifyDataSetChanged();
         }
     }
+    
+    RoomDatabase.Callback callback = new RoomDatabase.Callback()
+    {
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db)
+        {
+            super.onCreate(db);
+            Log.i("MainActivity", "onCreate: ");
+            
+            createContact("name 1", "email 1");
+            createContact("name 2", "email 2");
+            createContact("name 3", "email 3");
+            createContact("name 4", "email 4");
+        }
+    
+        @Override
+        public void onOpen(@NonNull SupportSQLiteDatabase db)
+        {
+            super.onOpen(db);
+            Log.i("MainActivity", "onOpen: ");
+    
+        }
+    };
 }
