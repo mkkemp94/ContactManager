@@ -21,8 +21,8 @@ public interface ContactDao
     public void deleteContact(Contact contact);
     
     @Query("SELECT * FROM contacts")
-    public List<Contact> getContacts(Contact contact);
+    public List<Contact> getContact();
     
     @Query("SELECT * FROM contacts WHERE contact_id == :contactId")
-    public Contact getContacts(long contactId);
+    public Contact getContact(long contactId);
 }
