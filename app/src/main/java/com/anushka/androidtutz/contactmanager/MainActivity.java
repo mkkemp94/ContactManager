@@ -23,11 +23,15 @@ import android.widget.Toast;
 import com.anushka.androidtutz.contactmanager.adapter.ContactsAdapter;
 import com.anushka.androidtutz.contactmanager.db.ContactAppDatabase;
 import com.anushka.androidtutz.contactmanager.db.entity.Contact;
+import com.anushka.androidtutz.contactmanager.di.AppComponent;
+import com.anushka.androidtutz.contactmanager.di.ContactAppDatabaseModule;
+import com.anushka.androidtutz.contactmanager.di.DaggerAppComponent;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
-import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
@@ -36,21 +40,29 @@ public class MainActivity extends AppCompatActivity {
     private ContactsAdapter contactsAdapter;
     private ArrayList<Contact> contactArrayList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private ContactAppDatabase contactAppDatabase;
-
-
+    
+    @Inject
+    public ContactAppDatabase contactAppDatabase;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    
+        AppComponent appComponent = DaggerAppComponent.builder().contactAppDatabaseModule(
+                new ContactAppDatabaseModule(
+                        getApplication(),
+                        callback)
+        ).build();
+        appComponent.inject(this);
+        
+        
+        
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(" Contacts Manager");
 
         recyclerView = findViewById(R.id.recycler_view_contacts);
-        contactAppDatabase = Room.databaseBuilder(getApplicationContext(),
-                ContactAppDatabase.class, "ContactDB"
-        ).addCallback(callback).build();
         
         new GetAllContactsAsyncTask().execute();
         
