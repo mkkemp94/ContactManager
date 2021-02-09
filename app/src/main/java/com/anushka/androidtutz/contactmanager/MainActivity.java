@@ -20,13 +20,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anushka.androidtutz.App;
 import com.anushka.androidtutz.contactmanager.adapter.ContactsAdapter;
 import com.anushka.androidtutz.contactmanager.db.ContactAppDatabase;
 import com.anushka.androidtutz.contactmanager.db.entity.Contact;
-import com.anushka.androidtutz.contactmanager.di.AppComponent;
-import com.anushka.androidtutz.contactmanager.di.ApplicationModule;
-import com.anushka.androidtutz.contactmanager.di.ContactAppDatabaseModule;
-import com.anushka.androidtutz.contactmanager.di.DaggerAppComponent;
 
 import java.util.ArrayList;
 
@@ -49,17 +46,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    
-        AppComponent appComponent = DaggerAppComponent.builder()
-                .applicationModule(
-                        new ApplicationModule(getApplication())
-                )
-                .contactAppDatabaseModule(
-                        new ContactAppDatabaseModule(callback)
-                ).build();
-        appComponent.inject(this);
         
-        
+        App.getApp().getAppComponent().inject(this);
         
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

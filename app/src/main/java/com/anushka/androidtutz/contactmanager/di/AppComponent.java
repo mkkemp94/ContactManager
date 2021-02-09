@@ -8,7 +8,7 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {
-        ContactAppDatabaseModule.class,
+        RoomModule.class,
         ApplicationModule.class
 })
 public interface AppComponent
