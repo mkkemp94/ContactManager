@@ -24,6 +24,7 @@ import com.anushka.androidtutz.contactmanager.adapter.ContactsAdapter;
 import com.anushka.androidtutz.contactmanager.db.ContactAppDatabase;
 import com.anushka.androidtutz.contactmanager.db.entity.Contact;
 import com.anushka.androidtutz.contactmanager.di.AppComponent;
+import com.anushka.androidtutz.contactmanager.di.ApplicationModule;
 import com.anushka.androidtutz.contactmanager.di.ContactAppDatabaseModule;
 import com.anushka.androidtutz.contactmanager.di.DaggerAppComponent;
 
@@ -49,11 +50,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     
-        AppComponent appComponent = DaggerAppComponent.builder().contactAppDatabaseModule(
-                new ContactAppDatabaseModule(
-                        getApplication(),
-                        callback)
-        ).build();
+        AppComponent appComponent = DaggerAppComponent.builder()
+                .applicationModule(
+                        new ApplicationModule(getApplication())
+                )
+                .contactAppDatabaseModule(
+                        new ContactAppDatabaseModule(callback)
+                ).build();
         appComponent.inject(this);
         
         

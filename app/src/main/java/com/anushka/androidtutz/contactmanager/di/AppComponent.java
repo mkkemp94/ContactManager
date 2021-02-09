@@ -2,9 +2,15 @@ package com.anushka.androidtutz.contactmanager.di;
 
 import com.anushka.androidtutz.contactmanager.MainActivity;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 
-@Component(modules = ContactAppDatabaseModule.class)
+@Singleton
+@Component(modules = {
+        ContactAppDatabaseModule.class,
+        ApplicationModule.class
+})
 public interface AppComponent
 {
     void inject(MainActivity mainActivity);

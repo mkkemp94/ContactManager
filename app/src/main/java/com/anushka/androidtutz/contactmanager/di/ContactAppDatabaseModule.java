@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.anushka.androidtutz.contactmanager.db.ContactAppDatabase;
 
+import javax.inject.Singleton;
+
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import dagger.Module;
@@ -12,18 +14,16 @@ import dagger.Provides;
 @Module
 public class ContactAppDatabaseModule
 {
-    Application application;
     RoomDatabase.Callback callback;
     
-    public ContactAppDatabaseModule(Application application,
-                                    RoomDatabase.Callback callback)
+    public ContactAppDatabaseModule(RoomDatabase.Callback callback)
     {
-        this.application = application;
         this.callback = callback;
     }
     
+    @Singleton
     @Provides
-    ContactAppDatabase provideContactAppDatabase()
+    ContactAppDatabase provideContactAppDatabase(Application application)
     {
         return Room.databaseBuilder(application.getApplicationContext(),
                 ContactAppDatabase.class, "ContactDB"
